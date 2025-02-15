@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Register</title>
+    <style>
+        :root {
+            --primary-color: #BBE1FA;
+            --secondary-color: #0F4C75;
+            --text-color: #3A3A3A;
+        }
+        body {
+            background: var(--primary-color) url('/images/bg.png') no-repeat center center/contain;
+            background-size: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+        .glassmorphism {
+            background: rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            padding: 2rem;
+        }
+        .input-container {
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 8px;
+            padding: 0.75rem;
+        }
+        .input-container input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            outline: none;
+            font-size: 1rem;
+            color: var(--text-color);
+        }
+        .input-container span {
+            font-size: 1.2rem;
+            margin-left: 8px;
+            color: var(--secondary-color);
+        }
+        h2 {
+            color: var(--text-color);
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+  <div class="logo w-[12vw] h-[5vw] top-0 left-0 absolute">
+    <img src="/images/logo1.png" alt="">
+  </div>
+    <div class="glassmorphism w-96 text-center">
+        <h2>Create an Account</h2>
+        
+        <form action="/user/register" method="post" class="mt-6">
+            <div class="mb-4">
+                <label for="user_name" class="block text-gray-700 font-medium text-left">Username</label>
+                <div class="input-container">
+                    <input type="text" id="user_name" name="user_name" placeholder="Choose a username" required>
+                    <span>👤</span>
+                </div>
+            </div>
+            
+            <div class="mb-4">
+                <label for="email" class="block text-gray-700 font-medium text-left">Email</label>
+                <div class="input-container">
+                    <input type="email" id="email" name="email" placeholder="Enter your email" required>
+                    <span>📧</span>
+                </div>
+            </div>
+            
+            <div class="mb-4">
+                <label for="password" class="block text-gray-700 font-medium text-left">Password</label>
+                <div class="input-container">
+                    <input type="password" id="password" name="password" placeholder="Create a password" required>
+                    <span>🔒</span>
+                </div>
+            </div>
+            
+            <button type="submit" class="w-full bg-[#0F4C75] hover:bg-green-800 text-white py-2 rounded-lg mt-4 text-lg transition duration-300">Register</button>
+            <a href="http://localhost:3000/user/login" class="block text-gray-700 mt-3 hover:underline">Already have an account? Login</a>
+        </form>
+    </div>
+</body>
+</html>

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Public Support Community</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Courgette&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css"rel="stylesheet"/>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #BBE1FA;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 20px;
+        }
+        .container {
+            width: 60%;
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+        }
+        .post, .reply {
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        .reply {
+            margin-left: 30px;
+            border-left: 3px solid #38aba0;
+        }
+        .glassmorphism {
+            background: rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            padding: 2rem;
+        }
+        .chat-input {
+            width: 100%;
+            padding: 10px;
+            border-radius: 8px;
+            border: none;
+            margin-top: 10px;
+            background: #f1f1f1;
+        }
+        .send-btn {
+            background: #38aba0;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        h1{
+        font-family: "Courgette", serif;
+        font-weight: 400;
+        font-style: normal;
+        }
+    </style>
+</head>
+<body>
+    <nav class="w-[98.3vw] h-16 bg-[#38aba0] flex items-center fixed top-0 left-0 shadow-lg shadow-gray-400 glassmorphism mt-[0.8vw] ml-[0.8vw] justify-between">
+        <h1 class="text-white text-2xl font-bold ">TRIPTI</h1>
+        
+        <div class="border border-gray-300 rounded-full p-1 shadow-md shadow-gray-700 bg-[#CCF4EC] text-black flex gap-[3vw]">
+            <a href="/journal/add" class="nav-link relative px-4 py-2 rounded-full font-medium transition-all duration-300 hover:bg-[#38aba0]/20 hover:border-2 hover:border-[#38aba0] hover:scale-105 hover:shadow-md">
+                Journal
+                <span class="nav-underline"></span>
+            </a>
+            <a href="/" class="nav-link relative px-4 py-2 rounded-full font-medium transition-all duration-300 hover:bg-[#38aba0]/20 hover:border-2 hover:border-[#38aba0] hover:scale-105 hover:shadow-md">
+                Home
+                <span class="nav-underline"></span>
+            </a>
+            <a href="/mood/add" class="nav-link relative px-4 py-2 rounded-full font-medium transition-all duration-300 hover:bg-[#38aba0]/20 hover:border-2 hover:border-[#38aba0] hover:scale-105 hover:shadow-md">
+                MoodLog
+                <span class="nav-underline"></span>
+            </a>
+            <a href="http://localhost:3000/forum/" class="nav-link relative px-4 py-2 rounded-full font-medium transition-all duration-300 hover:bg-[#38aba0]/20 hover:border-2 hover:border-[#38aba0] hover:scale-105 hover:shadow-md">
+                Community
+                <span class="nav-underline"></span>
+            </a>
+        </div>
+
+        <form action="/user/logout" method="GET" class="inline">
+            <button type="submit" class="bg-red-500 px-4 py-2 rounded-full text-white"><i class="ri-logout-circle-r-line"></i></button>
+        </form>
+      
+    </nav>
+
+    <div class="container mt-[7vw]">
+        <h2 class="text-center text-2xl font-bold">🧑‍🤝‍🧑 Public Support Community</h2>
+        
+        <form action="/forum/new" method="POST" class="mt-4">
+            <textarea name="content" class="chat-input" placeholder="Share your thoughts..." required></textarea>
+            <button type="submit" class="send-btn w-full">Post</button>
+        </form>
+
+        <hr class="my-4">
+
+        <% posts.forEach(post => { %>
+            <div class="post">
+                <p><strong>Anonymous:</strong> <%= post.content %></p>
+                <small class="text-gray-500"><%= post.createdAt.toDateString() %></small>
+                
+                <% post.replies.forEach(reply => { %>
+                    <div class="reply">
+                        <p>↳ <%= reply.content %></p>
+                        <small class="text-gray-500"><%= reply.createdAt.toDateString() %></small>
+                    </div>
+                <% }); %>
+                
+                <form action="/forum/<%= post._id %>/reply" method="POST">
+                    <input type="text" name="content" class="chat-input" placeholder="Reply anonymously..." required>
+                    <button type="submit" class="send-btn">Reply</button>
+                </form>
+            </div>
+        <% }); %>
+    </div>
+</body>
+</html>

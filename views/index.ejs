@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mental Health AI Chatbot</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Courgette&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css"rel="stylesheet"/>
+    <style>
+        :root {
+            --primary-color: #BBE1FA;
+            --secondary-color: #38aba0;
+            --text-color: #3A3A3A;
+        }
+
+    
+        body {
+            background: var(--primary-color);
+            
+            color: var(--text-color);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+        .chat-container {
+            width: 60%;
+            height: 75vh;
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            
+        }
+        .glassmorphism {
+            background: rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            padding: 2rem;
+        }
+
+        .chat-header {
+            background: var(--secondary-color);
+            padding: 1rem;
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: white;
+            border-top-left-radius: 12px;
+            border-top-right-radius: 12px;
+        }
+        .chat-box {
+            flex: 1;
+            padding: 1rem;
+            overflow-y: auto;
+            
+        }
+        .chat-input-container {
+            display: flex;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.7);
+            border-bottom-left-radius: 12px;
+            border-bottom-right-radius: 12px;
+        }
+        .chat-input {
+            flex: 1;
+            padding: 0.8rem;
+            border: none;
+            border-radius: 8px;
+            outline: none;
+            background: var(--primary-color);
+            color: var(--text-color);
+            font-size: 1rem;
+        }
+        .send-btn {
+            margin-left: 10px;
+            padding: 0.8rem 1.5rem;
+            background: var(--secondary-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+        .send-btn:hover {
+            background: #8A9A68;
+        }
+        h1{
+        font-family: "Courgette", serif;
+        font-weight: 400;
+        font-style: normal;
+        }
+    </style>
+</head>
+<body>
+    <nav class="w-[98.3vw] h-16 bg-[#38aba0] flex items-center fixed top-0 left-0 shadow-lg shadow-gray-400 glassmorphism mt-[0.8vw] ml-[0.8vw] justify-between">
+        <h1 class="text-white text-2xl font-bold ">TRIPTI</h1>
+        
+        <div class="border border-gray-300 rounded-full p-1 shadow-md shadow-gray-700 bg-[#CCF4EC] text-black flex gap-[3vw]">
+            <a href="/journal/add" class="nav-link relative px-4 py-2 rounded-full font-medium transition-all duration-300 hover:bg-[#38aba0]/20 hover:border-2 hover:border-[#38aba0] hover:scale-105 hover:shadow-md">
+                Journal
+                <span class="nav-underline"></span>
+            </a>
+            <a href="/" class="nav-link relative px-4 py-2 rounded-full font-medium transition-all duration-300 hover:bg-[#38aba0]/20 hover:border-2 hover:border-[#38aba0] hover:scale-105 hover:shadow-md">
+                Home
+                <span class="nav-underline"></span>
+            </a>
+            <a href="/mood/add" class="nav-link relative px-4 py-2 rounded-full font-medium transition-all duration-300 hover:bg-[#38aba0]/20 hover:border-2 hover:border-[#38aba0] hover:scale-105 hover:shadow-md">
+                MoodLog
+                <span class="nav-underline"></span>
+            </a>
+            <a href="http://localhost:3000/forum/" class="nav-link relative px-4 py-2 rounded-full font-medium transition-all duration-300 hover:bg-[#38aba0]/20 hover:border-2 hover:border-[#38aba0] hover:scale-105 hover:shadow-md">
+                Community
+                <span class="nav-underline"></span>
+            </a>
+        </div>
+
+        <form action="/user/logout" method="GET" class="inline">
+            <button type="submit" class="bg-red-500 px-4 py-2 rounded-full text-white"><i class="ri-logout-circle-r-line"></i></button>
+        </form>
+      
+    </nav>
+
+    <div class="chat-container mt-20">
+        <div class="chat-header font-mono">Talk with Tripti <i class="ri-chat-smile-3-fill"></i> </div>
+        <div id="chat-box" class="chat-box overflow-y-auto">
+            <p class="text-center text-gray-600">Start the conversation...</p>
+        </div>
+        
+        
+        <div class="chat-input-container relative w-full px-4 pb-4">
+            <input id="user-input" type="text" class="chat-input rounded-full w-full pr-12" placeholder="Type your message...">
+            <button onclick="sendMessage()" class="absolute right-6 top-1/2 transform -translate-y-1/2 bg-[#38aba0] hover:bg-blue-600 text-white px-3 py-2 rounded-full shadow-md transition">
+                <i class="ri-send-plane-2-fill"></i>
+            </button>
+        </div>
+    </div>
+    
+
+    <div class="flex mt-4 gap-4 justify-center">
+        <button id="mute-btn" onclick="toggleMute()" class="px-4 py-3 bg-[#38aba0] hover:bg-blue-600 rounded-lg text-white font-semibold shadow-md transition">
+            <i class="ri-volume-mute-fill"></i>
+        </button>
+        <button onclick="toggleMusic()" class="px-4 py-3 bg-[#38aba0] hover:bg-blue-600 rounded-lg text-white font-semibold shadow-md transition">
+            Toggle Music
+        </button>
+        <button onclick="clearChat()" class="px-4 py-3 bg-red-500 hover:bg-red-700 rounded-lg text-white font-semibold shadow-md transition">
+            <i class="ri-delete-bin-6-fill"></i>
+        </button>
+    </div>
+
+    
+
+    
+    
+    
+    <script src="/script.js"></script>
+    <script src="/music.js"></script>
+</body>
+</html>
