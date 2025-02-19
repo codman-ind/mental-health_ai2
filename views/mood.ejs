@@ -26,101 +26,130 @@
             height: 100vh;
         }
 
-        .container {
-            width: 50%;
-            background: rgba(255, 255, 255, 0.6);
-            backdrop-filter: blur(10px);
-            border-radius: 12px;
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            padding: 2rem;
-            text-align: center;
+        h1 {
+            font-family: "Courgette", serif;
+            font-weight: 400;
+            font-style: normal;
         }
 
-        .glassmorphism {
-            background: rgba(255, 255, 255, 0.3);
-            backdrop-filter: blur(10px);
-            border-radius: 12px;
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            padding: 2rem;
-        }
+        @media (max-width: 768px) {
+    #nav-links {
+        background: #CCF4EC; /* Light background only on mobile */
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
+        border: 1px solid #ccc;
+        right: -100%;
 
-        .header {
-            background: var(--secondary-color);
-            padding: 1rem;
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: white;
-            border-radius: 12px;
-        }
+    }
 
-        .mood-btn {
-            font-size: 2rem;
-            padding: 0.8rem;
-            border-radius: 12px;
-            border: none;
-            cursor: pointer;
-            transition: 0.3s;
-        }
+    #nav-links.active {
+        right: 0;
+    }
+}
 
-        .mood-btn:hover {
-            transform: scale(1.1);
-        }
-        h1{
-        font-family: "Courgette", serif;
-        font-weight: 400;
-        font-style: normal;
-        }
+@media (min-width: 768px) {
+    #nav-links {
+        
+        background: transparent !important; /* No background on PC */
+        box-shadow: none !important;
+        border: none !important;
+        right: 0 !important;
+        display: none
+    }
+}
     </style>
 </head>
-<body>
-    <nav class="w-[98.3vw] h-16 bg-[#38aba0] flex items-center fixed top-0 left-0 shadow-lg shadow-gray-400 glassmorphism mt-[0.8vw] ml-[0.8vw] justify-between">
-        <h1 class="text-white text-2xl font-bold ">TRIPTI</h1>
-        
-        <div class="border border-gray-300 rounded-full p-1 shadow-md shadow-gray-700 bg-[#CCF4EC] text-black flex gap-[3vw]">
-            <a href="/journal/add" class="nav-link relative px-4 py-2 rounded-full font-medium transition-all duration-300 hover:bg-[#38aba0]/20 hover:border-2 hover:border-[#38aba0] hover:scale-105 hover:shadow-md">
-                Journal
-                <span class="nav-underline"></span>
-            </a>
-            <a href="/" class="nav-link relative px-4 py-2 rounded-full font-medium transition-all duration-300 hover:bg-[#38aba0]/20 hover:border-2 hover:border-[#38aba0] hover:scale-105 hover:shadow-md">
-                Home
-                <span class="nav-underline"></span>
-            </a>
-            <a href="/mood/add" class="nav-link relative px-4 py-2 rounded-full font-medium transition-all duration-300 hover:bg-[#38aba0]/20 hover:border-2 hover:border-[#38aba0] hover:scale-105 hover:shadow-md">
-                MoodLog
-                <span class="nav-underline"></span>
-            </a>
-            <a href="http://localhost:3000/forum/" class="nav-link relative px-4 py-2 rounded-full font-medium transition-all duration-300 hover:bg-[#38aba0]/20 hover:border-2 hover:border-[#38aba0] hover:scale-105 hover:shadow-md">
-                Community
-                <span class="nav-underline"></span>
-            </a>
-        </div>
+<body class="overflow-x-hidden">
 
-        <form action="/user/logout" method="GET" class="inline">
-            <button type="submit" class="bg-red-500 px-4 py-2 rounded-full text-white"><i class="ri-logout-circle-r-line"></i></button>
-        </form>
-      
+    <!-- Navbar -->
+    <nav class="bg-[#38aba0] flex justify-between items-center px-6 py-4 shadow-md fixed top-0 left-0 w-full z-50">
+        <!-- Logo -->
+        <a href="/" class="text-white font-bold text-xl italic">TRIPTI</a>
+    
+        <!-- Links for PC -->
+        <div class="hidden md:flex gap-8 text-black font-medium">
+            <a href="/journal/add" class="hover:text-white">Journal</a>
+            <a href="/" class="hover:text-white">Home</a>
+            <a href="/mood/add" class="hover:text-white">MoodLog</a>
+            <a href="http://localhost:3000/forum/" class="hover:text-white">Community</a>
+        </div>
+    
+        <!-- Mobile Menu Button -->
+        <button id="menu-btn" class="md:hidden text-white text-2xl">
+            <i class="ri-menu-line"></i>
+        </button>
+    
+        <!-- Mobile Menu -->
+<div id="nav-links" class="fixed top-0 right-[-100%] w-64 h-full bg-[#CCF4EC] shadow-lg flex flex-col items-center pt-20 gap-4 transition-all duration-300 md:hidden">
+            <!-- Close Button -->
+            <button id="close-btn" class="absolute top-5 right-5 text-black text-2xl">
+                <i class="ri-close-line"></i>
+            </button>
+    
+            <a href="/journal/add" class="text-black font-medium">Journal</a>
+            <a href="/" class="text-black font-medium">Home</a>
+            <a href="/mood/add" class="text-black font-medium">MoodLog</a>
+            <a href="/forum/" class="text-black font-medium">Community</a>
+        </div>
     </nav>
 
-    <div class="container mt-20 h-[45vw]">
-        <div class="header">😀 MoodLog</div>
+    <!-- Mood Log Section -->
+    <div class="w-full max-w-lg bg-white/60 backdrop-blur-md rounded-lg shadow-lg border border-white/30 p-6 text-center mt-24 mx-4">
+        <div class="bg-[#38aba0] text-white p-3 rounded-lg text-xl font-bold">😀 MoodLog</div>
         <p class="mt-4">Track your mood daily and view trends.</p>
-        <form id="moodForm" class="mt-6 flex justify-center gap-4">
-            <button type="button" class="mood-btn bg-green-200" data-mood="happy">😊</button>
-            <button type="button" class="mood-btn bg-yellow-200" data-mood="neutral">😐</button>
-            <button type="button" class="mood-btn bg-orange-200" data-mood="sad">😔</button>
-            <button type="button" class="mood-btn bg-red-200" data-mood="very_sad">😢</button>
 
-            <div class="mt-6">
-                <canvas id="moodChart" class=" h-[25vw]"></canvas>
-            </div>
+        <form id="moodForm" class="mt-6 flex flex-wrap justify-center gap-3">
+            <button type="button" class="mood-btn bg-green-200 text-2xl p-3 rounded-lg" data-mood="happy">😊</button>
+            <button type="button" class="mood-btn bg-yellow-200 text-2xl p-3 rounded-lg" data-mood="neutral">😐</button>
+            <button type="button" class="mood-btn bg-orange-200 text-2xl p-3 rounded-lg" data-mood="sad">😔</button>
+            <button type="button" class="mood-btn bg-red-200 text-2xl p-3 rounded-lg" data-mood="very_sad">😢</button>
         </form>
-        
-        
 
+        <div class="mt-6">
+            <canvas id="moodChart" class="max-w-full h-auto"></canvas>
+        </div>
     </div>
+
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="/mood.js"></script>
+
+    <script>
+        const menuBtn = document.getElementById('menu-btn');
+        const closeBtn = document.getElementById('close-btn');
+        const navLinks = document.getElementById('nav-links');
+    
+        menuBtn.addEventListener('click', () => {
+            if (window.innerWidth < 768) { // Only toggle on mobile
+                navLinks.classList.add('active');
+            }
+        });
+    
+        closeBtn.addEventListener('click', () => {
+            navLinks.classList.remove('active');
+        });
+    
+        document.addEventListener('click', (event) => {
+            if (window.innerWidth < 768 && !navLinks.contains(event.target) && !menuBtn.contains(event.target)) {
+                navLinks.classList.remove('active');
+            }
+        });
+    </script>
+
+<script>
+    document.getElementById('menu-btn').addEventListener('click', function () {
+        document.getElementById('nav-links').style.right = '0';
+    });
+    
+    document.getElementById('close-btn').addEventListener('click', function () {
+        document.getElementById('nav-links').style.right = '-100%';
+    });
+
+    window.addEventListener('resize', function () {
+    if (window.innerWidth >= 768) {
+        document.getElementById('nav-links').style.right = '-100%';
+    }
+});
+
+    </script>
+    
 </body>
 </html>
