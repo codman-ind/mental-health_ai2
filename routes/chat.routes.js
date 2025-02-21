@@ -18,9 +18,6 @@ router.post("/chat", isAuthenticated, async (req, res) => {
             return res.status(404).json({ reply: "User not found." });
         }
 
-        // Fetch previous chat history from the database (limit to last 10 messages)
-        const chatHistory = user.chatHistory?.slice(-10) || [];
-
         // Fetch last 5 journal and mood log entries
         const lastJournalEntries = user.journalEntries.slice(-5);
         const journalText = lastJournalEntries.length
@@ -32,7 +29,7 @@ router.post("/chat", isAuthenticated, async (req, res) => {
             ? lastMoodLog.map(entry => `${entry.createdAt.toDateString()} - Mood: ${entry.mood}`).join("\n")
             : "No previous mood entries found.";
 
-        // Prepare AI prompt
+        // Prepare AI prompt (no chat history included)
         const model = genAI.getGenerativeModel({ model: "gemini-pro" });
         const prompt = `
         You are a friendly and supportive AI mental health assistant. 
@@ -58,10 +55,7 @@ router.post("/chat", isAuthenticated, async (req, res) => {
         - Mood Log:
         ${moodlog}
 
-        **Previous Chat History:**
-        ${chatHistory.map(entry => `${entry.role}: ${entry.message}`).join("\n")}
-
-        **User's New Message:**
+        **User's Message:**
         "${userMessage}"
 
         **AI Response:**
@@ -70,14 +64,6 @@ router.post("/chat", isAuthenticated, async (req, res) => {
         // Generate AI response
         const result = await model.generateContent(prompt);
         const responseText = result.response.text();
-
-        // Save chat history in MongoDB
-        user.chatHistory.push({ role: "User", message: userMessage });
-        user.chatHistory.push({ role: "AI", message: responseText });
-
-        // Limit chat history to the last 50 messages
-        user.chatHistory = user.chatHistory.slice(-50);
-        await user.save();
 
         res.json({ reply: responseText });
     } catch (error) {
